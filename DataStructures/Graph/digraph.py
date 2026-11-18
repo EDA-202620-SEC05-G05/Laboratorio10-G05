@@ -1,3 +1,4 @@
+
 from DataStructures.Map import map_linear_probing as mp
 from DataStructures.Graph import vertex as vtx
  
@@ -88,3 +89,90 @@ def size(my_graph):
     """
     return my_graph["num_edges"]
  
+ 
+# ---------------------------------------------------------------------------
+# Semana 1 - Casa
+# ---------------------------------------------------------------------------
+ 
+def get_vertex(my_graph, key_u):
+    """
+    Retorna el vértice con llave ``key_u``.
+ 
+    :raises Exception: Si el vértice no existe
+ 
+    :rtype: vertex
+    """
+    vertex = mp.get(my_graph["vertices"], key_u)
+    if vertex is None:
+        raise Exception("El vertice no existe")
+    return vertex
+ 
+ 
+def degree(my_graph, key_u):
+    """
+    Retorna el grado del vértice ``key_u`` (número de arcos que salen de él).
+ 
+    :raises Exception: Si el vértice no existe
+ 
+    :rtype: int
+    """
+    return vtx.degree(get_vertex(my_graph, key_u))
+ 
+ 
+def adjacents(my_graph, key_u):
+    """
+    Retorna una lista (array_list) con las llaves de los vértices adyacentes
+    a ``key_u``.
+ 
+    :raises Exception: Si el vértice no existe
+ 
+    :rtype: array_list
+    """
+    vertex = get_vertex(my_graph, key_u)
+    return mp.key_set(vtx.get_adjacents(vertex))
+ 
+ 
+def vertices(my_graph):
+    """
+    Retorna una lista (array_list) con las llaves de todos los vértices del grafo.
+ 
+    :rtype: array_list
+    """
+    return mp.key_set(my_graph["vertices"])
+ 
+ 
+def edges_vertex(my_graph, key_u):
+    """
+    Retorna una lista (array_list) con los arcos que salen del vértice ``key_u``.
+ 
+    :raises Exception: Si el vértice no existe
+ 
+    :rtype: array_list
+    """
+    vertex = get_vertex(my_graph, key_u)
+    return mp.value_set(vtx.get_adjacents(vertex))
+ 
+ 
+def update_vertex_info(my_graph, key_u, new_info_u):
+    """
+    Actualiza la información del vértice ``key_u`` con ``new_info_u``.
+ 
+    :raises Exception: Si el vértice no existe
+ 
+    :returns: Grafo con el vértice actualizado
+    :rtype: digraph
+    """
+    vertex = get_vertex(my_graph, key_u)
+    vtx.set_value(vertex, new_info_u)
+    return my_graph
+ 
+ 
+def get_vertex_information(my_graph, key_u):
+    """
+    Retorna la información (value) del vértice ``key_u``.
+ 
+    :raises Exception: Si el vértice no existe
+ 
+    :rtype: any
+    """
+    return vtx.get_value(get_vertex(my_graph, key_u))

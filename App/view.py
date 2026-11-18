@@ -27,6 +27,9 @@
 
 import sys
 import threading
+
+from DataStructures.List import single_linked_list as lt
+from DataStructures.Stack import stack
 from App import logic
 
 """
@@ -73,13 +76,48 @@ def option_one(cont):
     print('Numero de arcos: ' + str(numedges))
     print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
 
-def option_two(cont):
-    # TODO: Imprimir los resultados de la opción 2
-    ...
+def option_two(analyzer):
+    print("\n------ OPCIÓN 2 ------")
+    print("Las paradas más concurridas son:")
+    top = logic.get_most_concurrent_stops(analyzer)
+    for i in range(lt.size(top)):
+        entry = lt.get_element(top, i)
+        print(f"{i + 1}. '{entry['stop']}': {entry['connections']} conexiones")
 
-def option_three(cont):
-    # TODO: Imprimir los resultados de la opción 3
-    ...
+
+def print_route(path):
+    """Imprime un camino (stack de vértices '<parada>-<bus>') agrupado por bus."""
+    current_bus = None
+    line = ""
+    while not stack.is_empty(path):
+        vertex = stack.pop(path)
+        stop_code, bus = vertex.split('-', 1)
+        if bus != current_bus:
+            if line != "":
+                print(line)
+            if current_bus is None:
+                print(f"--- Tomar bus '{bus}' desde '{vertex}' ---")
+            else:
+                print(f"--- Cambiar a bus '{bus}' en la parada '{stop_code}' ---")
+            current_bus = bus
+            line = stop_code
+        else:
+            line += " -> " + stop_code
+    if line != "":
+        print(line)
+
+
+def option_three(analyzer):
+    print("\n----- OPCIÓN 3 (DFS) ----")
+    stop1 = input("Parada inicial: ").strip()
+    stop2 = input("Parada destino: ").strip()
+    print(f"Parada inicial: '{stop1}'")
+    print(f"Parada destino: '{stop2}'\n")
+    path = logic.get_route_between_stops_dfs(analyzer, stop1, stop2)
+    if path is None:
+        print("No existe una ruta entre las dos paradas.")
+    else:
+        print_route(path)
 
 def option_four(cont):
     # TODO: Imprimir los resultados de la opción 4

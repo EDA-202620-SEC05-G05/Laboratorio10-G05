@@ -28,6 +28,10 @@
 #  Importaciones
 # ___________________________________________________
 
+
+from DataStructures.Graph import dfs
+from DataStructures.List import array_list as al
+from DataStructures.Priority_queue import priority_queue as pq
 from DataStructures.List import single_linked_list as lt
 from DataStructures.Map import map_linear_probing as m
 from DataStructures.Graph import digraph as G
@@ -249,17 +253,36 @@ def add_same_stop_connections(analyzer, service):
 
 def get_most_concurrent_stops(analyzer):
     """
-    Obtiene las 5 paradas más concurridas
+    Obtiene las 5 paradas más concurridas (más arcos salientes).
+    Retorna una lista con elementos {'stop': llave_vertice, 'connections': grado}
+    ordenada de mayor a menor.
     """
-    # TODO: Obtener las 5 paradas más concurridas, es decir, con más arcos salientes
-    ...
+    graph = analyzer['connections']
+    heap = pq.new_heap(is_min_pq=False)   # la raíz es el mayor grado
+
+    keys = G.vertices(graph)
+    for i in range(al.size(keys)):
+        key = al.get_element(keys, i)
+        pq.insert(heap, G.degree(graph, key), key)
+
+    top = lt.new_list()
+    for _ in range(5):
+        key = pq.remove(heap)
+        if key is None:
+            break
+        lt.add_last(top, {'stop': key, 'connections': G.degree(graph, key)})
+    return top
+
 
 def get_route_between_stops_dfs(analyzer, stop1, stop2):
     """
-    Obtener la ruta entre dos parada usando dfs
+    Obtener la ruta entre dos paradas usando dfs.
+    Retorna una pila con el camino (el tope es stop1) o None si no hay camino.
     """
-    # TODO: Obtener la ruta entre dos parada usando dfs
-    ...
+    search = dfs.dfs(analyzer['connections'], stop1)
+    if dfs.has_path_to(stop2, search):
+        return dfs.path_to(stop2, search)
+    return None
 
 def get_route_between_stops_bfs(analyzer, stop1, stop2):
     """
