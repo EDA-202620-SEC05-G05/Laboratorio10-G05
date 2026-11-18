@@ -119,9 +119,18 @@ def option_three(analyzer):
     else:
         print_route(path)
 
-def option_four(cont):
-    # TODO: Imprimir los resultados de la opción 4
-    ...
+
+def option_four(analyzer):
+    print("\n----- OPCIÓN 4 (BFS) ----")
+    stop1 = input("Parada inicial: ").strip()
+    stop2 = input("Parada destino: ").strip()
+    print(f"Parada inicial: '{stop1}'")
+    print(f"Parada destino: '{stop2}'\n")
+    path = logic.get_route_between_stops_bfs(analyzer, stop1, stop2)
+    if path is None:
+        print("No existe una ruta entre las dos paradas.")
+    else:
+        print_route(path)
 
 def option_five(cont):
     # TODO: Imprimir los resultados de la opción 5

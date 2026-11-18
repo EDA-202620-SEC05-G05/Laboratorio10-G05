@@ -35,13 +35,13 @@ from DataStructures.Priority_queue import priority_queue as pq
 from DataStructures.List import single_linked_list as lt
 from DataStructures.Map import map_linear_probing as m
 from DataStructures.Graph import digraph as G
+from DataStructures.Graph import bfs
 
 import csv
 import time
 import os
 
 data_dir = os.path.dirname(os.path.realpath('__file__')) + '/Data/singapur_bus_routes/'
-
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -286,10 +286,13 @@ def get_route_between_stops_dfs(analyzer, stop1, stop2):
 
 def get_route_between_stops_bfs(analyzer, stop1, stop2):
     """
-    Obtener la ruta entre dos parada usando bfs
+    Obtener la ruta entre dos paradas usando bfs.
+    Retorna una pila con el camino (el tope es stop1) o None si no hay camino.
     """
-    # TODO: Obtener la ruta entre dos parada usando bfs
-    ...
+    search = bfs.bfs(analyzer['connections'], stop1)
+    if bfs.has_path_to(stop2, search):
+        return bfs.path_to(stop2, search)
+    return None
 
 def get_shortest_route_between_stops(analyzer, stop1, stop2):
     """
