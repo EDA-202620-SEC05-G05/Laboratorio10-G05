@@ -132,9 +132,17 @@ def option_four(analyzer):
     else:
         print_route(path)
 
-def option_five(cont):
-    # TODO: Imprimir los resultados de la opción 5
-    ...
+def option_five(analyzer):
+    print("\n----- OPCIÓN 5 ----")
+    stop1 = input("Origen: ").strip()
+    stop2 = input("Destino: ").strip()
+    print(f"Origen: '{stop1}'")
+    print(f"Destino: '{stop2}'")
+    path = logic.get_shortest_route_between_stops(analyzer, stop1, stop2)
+    if path is None:
+        print("No existe una ruta entre las dos paradas.")
+    else:
+        print_route(path)
 
 def option_six(cont):
     # (Opcional) TODO: Imprimir los resultados de la opción 6
