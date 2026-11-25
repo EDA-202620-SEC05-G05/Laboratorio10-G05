@@ -36,6 +36,7 @@ from DataStructures.List import single_linked_list as lt
 from DataStructures.Map import map_linear_probing as m
 from DataStructures.Graph import digraph as G
 from DataStructures.Graph import bfs
+from DataStructures.Graph import dijkstra
 
 import csv
 import time
@@ -296,12 +297,19 @@ def get_route_between_stops_bfs(analyzer, stop1, stop2):
 
 def get_shortest_route_between_stops(analyzer, stop1, stop2):
     """
-    Obtener la ruta mínima entre dos paradas
+    Obtener la ruta mínima entre dos paradas.
+    El resultado de Dijkstra se guarda en analyzer['paths'] y se reutiliza
+    si la siguiente consulta parte del mismo origen.
+    Retorna una pila con el camino (el tope es stop1) o None si no hay camino.
     """
-    # TODO: Obtener la ruta mínima entre dos paradas
-    # Nota: Tenga en cuenta que el debe guardar en la llave
-    #       analyzer['paths'] el resultado del algoritmo de Dijkstra
-    ...
+    paths = analyzer['paths']
+    if paths is None or paths['source'] != stop1:
+        paths = dijkstra.dijkstra(analyzer['connections'], stop1)
+        analyzer['paths'] = paths
+
+    if dijkstra.has_path_to(stop2, paths):
+        return dijkstra.path_to(stop2, paths)
+    return None
 
 def show_calculated_shortest_route(analyzer, destination_stop):
     # (Opcional) TODO: Mostrar en un mapa la ruta mínima entre dos paradas usando folium
